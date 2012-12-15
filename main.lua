@@ -11,6 +11,7 @@ require 'views/view'
 require 'views/menu'
 require 'views/map_view'
 require 'map'
+require 'sound_manager'
 
 fx = {}
 fx.bloom_noise = require 'shader/bloom_noise'
@@ -46,6 +47,8 @@ end
 
 function love.load()
   game.animations = require('animations')
+  game.sounds = require('sounds')
+  love.audio.play(game.sounds.startmenu) -- stream and loop background music
 end
 
 function love.draw()
@@ -73,6 +76,7 @@ function love.keypressed(key)
 end
 
 function love.update(dt)
+  love.audio.update()
   if game.state == 'menu' then
     game.views.menu:update(dt)
     game.animations.valve.running = true
