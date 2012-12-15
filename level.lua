@@ -16,7 +16,6 @@ function Level:placeExit(exits, seed)
   if not exits[1] then return true end
   if exits[1] < 1 then return true end
   local pos = self:seedPosition(exits[1], exits[1]*2)
-  print(pos.x, pos.y)
   local tile = self.map:getTile(pos)
   if not(tile) then
     return true

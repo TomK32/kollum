@@ -52,7 +52,7 @@ function Actor:updatePosition(dt)
   self.game.map:moveEntity(self, old_position, self.position)
 
   if tile.exit then
-    self.game.exitTo(tile.exit)
+    self.game:exitTo(tile.exit)
   end
 
   if self.inputs then

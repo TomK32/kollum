@@ -52,7 +52,7 @@ function game:nextLevel(level_num)
   if not level_num then
     self.current_level = game.current_level + 1
   else
-    self.current_level = self.level_num
+    self.current_level = level_num
   end
   table.insert(self.levels, Level(self.current_level, self.seed))
   game.map = self.levels[self.current_level].map
