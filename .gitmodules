@@ -1,6 +1,3 @@
 [submodule "lib/quickie"]
 	path = lib/quickie
 	url = git://github.com/vrld/Quickie
-[submodule "lib/noise"]
-	path = lib/noise
-	url = git://github.com/agladysh/lua-noise.git
