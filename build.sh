@@ -15,7 +15,7 @@ done
 
 # https://github.com/josefnpat/LD24/blob/master/build.sh
 #Configure this, and also ensure you have the build/osx.patch ready.
-NAME="Cross Country Runner"
+NAME="Kollum: Pressure Valve"
 
 GAME_VERSION=`git tag|tail -1`
 REVISION=`git log ${GAME_VERSION}..HEAD --pretty=format:'' | wc -l | sed -e 's/ //g'`

@@ -1,2 +1,1 @@
-game = {}
-game.version = '0.0.1'
+game = {}; game.version = '0.0.1-8'
