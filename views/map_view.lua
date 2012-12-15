@@ -4,10 +4,15 @@ MapView:include({
   map = nil,
   tile_size = {x = 24, y = 24},
   cursor_position = { x = 14, y = 11 },
-  top_left = { x = 0, y = 0 }, -- offset
+  top_left = { x = 5, y = 5 }, -- offset
   draw_cursor = false,
   canvas = nil,
-
+  arrows = {
+    up = { p = function(self) return {-self.tile_size.x, 10, self.tile_size.x, 10, 0, 0} end, t = {1, 0}},
+    down = { p = function(self) return {-self.tile_size.x, -20, self.tile_size.x, -20, 0, -10} end, t = {1, 2}},
+    right = { p = function(self) return {-20, -self.tile_size.y, -20, self.tile_size.y, -10, 0} end, t = {2, 1}},
+    left = { p = function(self) return {10, -self.tile_size.y, 10, self.tile_size.y, 0, 0} end, t = {0, 1}},
+  },
   initialize = function(self, map)
     self.map = map
     self.display = {x = 10, y = 10, width = 320, height = 320}
@@ -44,8 +49,23 @@ MapView:include({
         end
       end
     end
+    love.graphics.setColor(255,255,255,255)
+    if self.top_left.x > 1 then self:drawArrow('up') end
+    if self.top_left.y > 1 then self:drawArrow('left') end
+    if (self.top_left.x + self.display.width)/self.tile_size.x < self.map.width then self:drawArrow('down') end
+    if (self.top_left.y + self.display.width)/self.tile_size.y < self.map.height then self:drawArrow('right') end
     love.graphics.setCanvas()
     return self.canvas
+  end,
+
+  drawArrow = function(self, direction)
+    love.graphics.push()
+    local arrow = self.arrows[direction]
+    local x = self.display.width / 2 * arrow.t[1]
+    local y = self.display.height / 2 * arrow.t[2]
+    love.graphics.translate(x, y)
+    love.graphics.polygon('fill', unpack(arrow.p(self)))
+    love.graphics.pop()
   end,
 
   tiles_x = function(self)
