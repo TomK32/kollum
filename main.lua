@@ -31,9 +31,11 @@ game = {
   seed = (os.time() % 10) + 100,
   fonts = {
     small = love.graphics.newFont(10),
-    regular = love.graphics.newFont(14)
+    regular = love.graphics.newFont(14),
+    large = love.graphics.newFont(24)
   },
-  actors = {}
+  actors = {},
+  level_dt = 0
 }
 
 function game:start()
@@ -61,6 +63,7 @@ function game:nextLevel(level_num)
   else
     self.views.map.map = game.map
   end
+  self.level_dt = 1
 end
 
 function game:setMode(mode)
@@ -86,6 +89,15 @@ function love.draw()
   love.graphics.setFont(game.fonts.small)
   love.graphics.print(love.graphics.getCaption() .. ' Seed: ' .. game.seed, 10, love.graphics.getHeight(), 0, 1, 1, 0, 14)
   love.graphics.setFont(game.fonts.regular)
+  if game.level_dt > 0 then
+    love.graphics.push()
+    love.graphics.setFont(game.fonts.large)
+    love.graphics.setColor(255,255,255,150)
+    local d = 1-game.level_dt
+    love.graphics.scale(10 * d,10 * d)
+    love.graphics.print("Level " .. game.current_level, math.sin(d*3) * 20, 12)
+    love.graphics.pop()
+  end
 end
 
 function drawValve()
@@ -100,6 +112,9 @@ end
 
 function love.update(dt)
   love.audio.update()
+  if game.level_dt > 0 then
+    game.level_dt = game.level_dt - dt
+  end
   if game.state == 'menu' then
     game.views.menu:update(dt)
     game.animations.valve.running = true
