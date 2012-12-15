@@ -10,6 +10,7 @@ require 'lib/AnAL'
 require 'views/view'
 require 'views/menu'
 require 'views/map_view'
+require 'level'
 require 'map'
 require 'sound_manager'
 
@@ -18,6 +19,8 @@ fx.bloom_noise = require 'shader/bloom_noise'
 
 game = {
   state = 'menu',
+  current_level = 0,
+  levels = {},
   views = { menu = MenuView() },
   graphics = {
     fullscreen = false,
@@ -32,12 +35,16 @@ game = {
 }
 
 function game:start()
-  SimplexNoise.seedP(game.seed)
-  self.map = Map(100, 100)
-  self.views.map = MapView(self.map)
+  self:nextLevel()
   self.views.map.display.width = game.graphics.mode.width - 10
   self.views.map.display.height = game.graphics.mode.height - 10
   self.state = 'map'
+end
+
+function game:nextLevel()
+  self.current_level = game.current_level + 1
+  table.insert(self.levels, Level(self.current_level, self.seed))
+  self.views.map = MapView(self.levels[self.current_level].map)
 end
 
 function game:setMode(mode)
