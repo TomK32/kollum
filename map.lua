@@ -13,6 +13,10 @@ Map:include({
   randomize = function(self)
     for x = 1, self.width do
       table.insert(self.map, {})
+      for y = 1, self.height do
+        -- if you have very large maps you might want to move this to getTile
+        self.map[x][y] = Tile(x, y)
+      end
     end
   end,
 
@@ -39,8 +43,7 @@ Map:include({
       if self.map[position.x][position.y] then
         return self.map[position.x][position.y]
       else
-        self.map[position.x][position.y] = Tile(position.x, position.y)
-        return self.map[position.x][position.y]
+        return nil
       end
     end
     return false
