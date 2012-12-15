@@ -13,7 +13,6 @@ require 'map'
 
 fx = {}
 fx.bloom_noise = require 'shader/bloom_noise'
-require 'shader/edge'
 
 game = {
   state = 'menu',
@@ -22,12 +21,18 @@ game = {
     fullscreen = false,
     mode = { height = love.graphics.getHeight(), width = love.graphics.getWidth() }
   },
-  seed = 100
+  map = nil,
+  seed = (os.time() % 10) + 100,
+  fonts = {
+    small = love.graphics.newFont(10),
+    regular = love.graphics.newFont(14)
+  }
 }
 
 function game:start()
+  SimplexNoise.seedP(game.seed)
   self.map = Map(100, 100)
-  self.views.map = MapView(self.map, game.seed)
+  self.views.map = MapView(self.map)
   self.views.map.display.width = game.graphics.mode.width - 10
   self.views.map.display.height = game.graphics.mode.height - 10
   self.state = 'map'
@@ -46,6 +51,11 @@ function love.draw()
     game.views.map:draw()
     love.graphics.setPixelEffect()
   end
+  love.graphics.setFont(game.fonts.small)
+  love.graphics.print(love.graphics.getCaption() .. ' Seed: ' .. game.seed, 10, love.graphics.getHeight(), 0, 1, 1, 0, 14)
+end
+
+function love.keypressed(key)
 end
 
 function love.update(dt)

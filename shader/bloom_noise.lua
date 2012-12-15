@@ -1,7 +1,7 @@
 return love.graphics.newPixelEffect[[
 extern vec2 image_size = vec2(800, 600);
 extern float factor = 1;
-extern float addPercent = 0.1; // 0..1 higher is darker
+extern float addPercent = 0.2; // 0..1 higher is darker
 extern float clamp = 0.85; // 0..1 lower is smoother
 
 float rand(vec2 n)

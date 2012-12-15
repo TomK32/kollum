@@ -22,11 +22,11 @@ MapView:include({
 
   drawContent = function(self)
     if self.canvas then
-      --love.graphics.setColor(255,255,255,255)
+      love.graphics.setColor(255,255,255,255)
       love.graphics.draw(self.canvas, 0, 0)
     end
     love.graphics.draw(self.canvas, 0, 0)
- end,
+  end,
 
   update = function (self)
     love.graphics.setCanvas(self.canvas)

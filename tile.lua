@@ -22,7 +22,7 @@ function Tile:seed(x, y)
   elseif s >= 120 and s < 200 then
     self.color = {s, s, s}
   else
-    self.color = {s-20, s, s-20}
+    self.color = {s-40, s, s-40}
   end
 end
 

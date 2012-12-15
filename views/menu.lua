@@ -1,6 +1,5 @@
 
 gui = require 'lib/quickie'
-require 'shader/noise'
 
 MenuView = class("MenuView", View)
 
