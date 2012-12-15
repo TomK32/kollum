@@ -43,8 +43,17 @@ function game:start()
   self.state = 'map'
 end
 
-function game:nextLevel()
-  self.current_level = game.current_level + 1
+function game:exitTo(exit)
+  self:nextLevel(exit.level)
+end
+
+function game:nextLevel(level_num)
+  self.actors = {}
+  if not level_num then
+    self.current_level = game.current_level + 1
+  else
+    self.current_level = self.level_num
+  end
   table.insert(self.levels, Level(self.current_level, self.seed))
   self.views.map = MapView(self.levels[self.current_level].map)
 end
@@ -58,6 +67,8 @@ function love.load()
   game.animations = require('animations')
   game.sounds = require('sounds')
   love.audio.play(game.sounds.startmenu) -- stream and loop background music
+
+  game:start()
 end
 
 function love.draw()
@@ -100,4 +111,3 @@ function love.update(dt)
   end
 end
 
---game:start()
