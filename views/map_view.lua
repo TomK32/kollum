@@ -26,11 +26,34 @@ MapView:include({
   end,
 
   drawContent = function(self)
+    love.graphics.setPixelEffect(fx.bloom_noise)
     if self.canvas then
       love.graphics.setColor(255,255,255,255)
       love.graphics.draw(self.canvas, 0, 0)
     end
-    love.graphics.draw(self.canvas, 0, 0)
+    love.graphics.setPixelEffect()
+    self:drawEntities()
+    --love.graphics.draw(self.canvas, 0, 0)
+  end,
+
+  drawEntities = function(self)
+    tiles_x = math.floor(self.display.width / self.tile_size.x)
+    tiles_y = math.floor(self.display.height / self.tile_size.y)
+    for x = 1, tiles_x do
+      for y = 1, tiles_y do
+        local color = nil
+        c_x = (x-1) * self.tile_size.x
+        c_y = (y-1) * self.tile_size.y
+        local tile = self.map:getTile({x = self.top_left.x + x, y = self.top_left.y + y})
+        if tile then
+          if tile:actors() and #tile:actors() > 0 then
+            self:drawTile({200,200,200,55}, c_x, c_y)
+            self:drawTile({200,200,0,155}, c_x, c_y, 'line')
+            tile:actors()[1].animation:draw(c_x, c_y)
+          end
+        end
+      end
+    end
   end,
 
   update = function (self)
@@ -49,12 +72,7 @@ MapView:include({
           else
             love.graphics.setColor(unpack(tile.color))
           end
-          if tile:actors() then
-            self:drawTile({200,200,200,255}, c_x, c_y)
-            tile:actors()[1].animation:draw(c_x, c_y)
-          else
-            self:drawTile(color, c_x, c_y)
-          end
+          self:drawTile(color, c_x, c_y)
         end
       end
     end
@@ -66,11 +84,12 @@ MapView:include({
     return self.canvas
   end,
 
-  drawTile = function(self, color, x, y)
+  drawTile = function(self, color, x, y, style)
     if color then
       love.graphics.setColor(unpack(color))
     end
-    love.graphics.rectangle('fill', c_x, c_y, self.tile_size.x, self.tile_size.y)
+    local style = style or 'fill'
+    love.graphics.rectangle(style, c_x, c_y, self.tile_size.x, self.tile_size.y)
     love.graphics.setColor(255,255,255,255)
   end,
 

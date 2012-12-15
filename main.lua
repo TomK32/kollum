@@ -77,9 +77,7 @@ function love.draw()
     drawValve()
     game.views.menu:draw()
   elseif game.state == 'map' then
-    love.graphics.setPixelEffect(fx.bloom_noise)
     game.views.map:draw()
-    love.graphics.setPixelEffect()
   end
   love.graphics.setFont(game.fonts.small)
   love.graphics.print(love.graphics.getCaption() .. ' Seed: ' .. game.seed, 10, love.graphics.getHeight(), 0, 1, 1, 0, 14)
