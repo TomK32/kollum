@@ -5,7 +5,7 @@ function Level:initialize(level, seed)
   self.level = level
   self.seed = seed
   SimplexNoise.seedP(self.seed + self.level)
-  self.map = Map(40, 24)
+  self.map = Map(40, 23)
   self:placeExit({self.level + 1, self.level - 1}, self.seed)
 
   self:placeHero()

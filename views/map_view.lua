@@ -78,8 +78,8 @@ MapView:include({
     end
     if self.top_left.x > 1 then self:drawArrow('up') end
     if self.top_left.y > 1 then self:drawArrow('left') end
-    if (self.top_left.x + self.display.width)/self.tile_size.x < self.map.width then self:drawArrow('down') end
-    if (self.top_left.y + self.display.width)/self.tile_size.y < self.map.height then self:drawArrow('right') end
+    if (self.top_left.x + self.display.width)/self.tile_size.x < self.map.width then self:drawArrow('right') end
+    if (self.top_left.y + self.display.height)/self.tile_size.y < self.map.height then self:drawArrow('down') end
     love.graphics.setCanvas()
     return self.canvas
   end,

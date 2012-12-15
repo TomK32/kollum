@@ -56,7 +56,11 @@ function game:nextLevel(level_num)
   end
   table.insert(self.levels, Level(self.current_level, self.seed))
   game.map = self.levels[self.current_level].map
-  self.views.map = MapView(game.map)
+  if not self.views.map then
+    self.views.map = MapView(game.map)
+  else
+    self.views.map.map = game.map
+  end
 end
 
 function game:setMode(mode)
