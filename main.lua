@@ -6,6 +6,7 @@
 --
 
 require 'lib/middleclass'
+require 'lib/AnAL'
 require 'views/view'
 require 'views/menu'
 require 'views/map_view'
@@ -41,6 +42,10 @@ end
 function game:setMode(mode)
   game.graphics.mode = mode
   love.graphics.setMode(mode.width, mode.height)
+end
+
+function love.load()
+  game.animations = require('animations')
 end
 
 function love.draw()
