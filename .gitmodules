@@ -1,3 +1,0 @@
-[submodule "lib/quickie"]
-	path = lib/quickie
-	url = git://github.com/vrld/Quickie
