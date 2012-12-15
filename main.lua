@@ -50,6 +50,7 @@ end
 
 function love.draw()
   if game.state == 'menu' then
+    drawValve()
     game.views.menu:draw()
   elseif game.state == 'map' then
     love.graphics.setPixelEffect(fx.bloom_noise)
@@ -58,6 +59,14 @@ function love.draw()
   end
   love.graphics.setFont(game.fonts.small)
   love.graphics.print(love.graphics.getCaption() .. ' Seed: ' .. game.seed, 10, love.graphics.getHeight(), 0, 1, 1, 0, 14)
+  love.graphics.setFont(game.fonts.regular)
+end
+
+function drawValve()
+  love.graphics.push()
+  love.graphics.scale(20,20)
+  game.animations.valve:draw(game.graphics.mode.width / 45, game.graphics.mode.height / 50)
+  love.graphics.pop()
 end
 
 function love.keypressed(key)
@@ -66,8 +75,15 @@ end
 function love.update(dt)
   if game.state == 'menu' then
     game.views.menu:update(dt)
+    game.animations.valve.running = true
   elseif game.state == 'map' then
     game.views.map:update(dt)
+    game.animations.valve.running = false
+  end
+  for i, animation in pairs(game.animations) do
+    if animation.running then
+      animation:update(dt)
+    end
   end
 end
 
