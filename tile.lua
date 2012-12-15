@@ -26,14 +26,15 @@ function Tile:seed(x, y)
   end
 end
 
-function Tile:addEntity(self, entity)
-  if not self.entities[entity.class.name] then
-    self.entities[entity.class.name] = {}
+function Tile:addEntity(entity)
+  local class_name = entity.entity_type or entity.class.name
+  if not self.entities[class_name] then
+    self.entities[class_name] = {}
   end
-  table.insert(self.entities[entity.class.name], entity)
+  table.insert(self.entities[class_name], entity)
 end
 
-function removeEntity(self, entity)
+function Tile:removeEntity(entity)
   for i, e in pairs(self.entities[entity.class.name]) do
     if e == entity then
       table.remove(self.entities[entity.class.name], i)
@@ -43,3 +44,6 @@ function removeEntity(self, entity)
   return false
 end
 
+function Tile:actors()
+  return self.entities['Actor']
+end

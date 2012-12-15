@@ -4,7 +4,7 @@ MapView:include({
   map = nil,
   tile_size = {x = 24, y = 24},
   cursor_position = { x = 14, y = 11 },
-  top_left = { x = 5, y = 5 }, -- offset
+  top_left = { x = 0, y = 0 }, -- offset
   draw_cursor = false,
   canvas = nil,
   arrows = {
@@ -39,23 +39,39 @@ MapView:include({
     tiles_y = math.floor(self.display.height / self.tile_size.y)
     for x = 0, tiles_x-1 do
       for y = 0, tiles_y-1 do
+        local color = nil
         c_x = x * self.tile_size.x
         c_y = y * self.tile_size.y
         local tile = self.map:getTile({x = self.top_left.x + x + 1, y = self.top_left.y + y + 1})
         if tile then
-          love.graphics.setColor(unpack(tile.color))
-          love.graphics.rectangle('fill', c_x, c_y, self.tile_size.x, self.tile_size.y)
-          love.graphics.setColor(255,255,255,200)
+          if tile.exit then
+            color = {200, 0, 0, 255}
+          else
+            love.graphics.setColor(unpack(tile.color))
+          end
+          if tile:actors() then
+            self:drawTile({200,200,200,255}, c_x, c_y)
+            tile:actors()[1].animation:draw(c_x, c_y)
+          else
+            self:drawTile(color, c_x, c_y)
+          end
         end
       end
     end
-    love.graphics.setColor(255,255,255,255)
     if self.top_left.x > 1 then self:drawArrow('up') end
     if self.top_left.y > 1 then self:drawArrow('left') end
     if (self.top_left.x + self.display.width)/self.tile_size.x < self.map.width then self:drawArrow('down') end
     if (self.top_left.y + self.display.width)/self.tile_size.y < self.map.height then self:drawArrow('right') end
     love.graphics.setCanvas()
     return self.canvas
+  end,
+
+  drawTile = function(self, color, x, y)
+    if color then
+      love.graphics.setColor(unpack(color))
+    end
+    love.graphics.rectangle('fill', c_x, c_y, self.tile_size.x, self.tile_size.y)
+    love.graphics.setColor(255,255,255,255)
   end,
 
   drawArrow = function(self, direction)

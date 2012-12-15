@@ -14,6 +14,7 @@ require 'level'
 require 'map'
 require 'sound_manager'
 
+require 'actor'
 fx = {}
 fx.bloom_noise = require 'shader/bloom_noise'
 
@@ -31,7 +32,8 @@ game = {
   fonts = {
     small = love.graphics.newFont(10),
     regular = love.graphics.newFont(14)
-  }
+  },
+  actors = {}
 }
 
 function game:start()
