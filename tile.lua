@@ -4,7 +4,8 @@ Tile = class("Tile")
 Tile:include({
   entities = {},
   color = nil,
-  seedVal = 0
+  seedVal = 0,
+  passable = true
 })
 
 function Tile:initialize(x, y)
@@ -17,6 +18,7 @@ function Tile:seed(x, y)
   local s = self.seedVal
   if s < 80 then
     self.color = {0,0,0}
+    self.passable = false
   elseif s >= 80 and s < 120 then
     self.color = {s, s-20, math.floor(s / 2)}
   elseif s >= 120 and s < 200 then
@@ -35,9 +37,10 @@ function Tile:addEntity(entity)
 end
 
 function Tile:removeEntity(entity)
-  for i, e in pairs(self.entities[entity.class.name]) do
+  local class_name = entity.entity_type or entity.class.name
+  for i, e in pairs(self.entities[class_name]) do
     if e == entity then
-      table.remove(self.entities[entity.class.name], i)
+      table.remove(self.entities[class_name], i)
       return true
     end
   end

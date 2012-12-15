@@ -55,7 +55,8 @@ function game:nextLevel(level_num)
     self.current_level = self.level_num
   end
   table.insert(self.levels, Level(self.current_level, self.seed))
-  self.views.map = MapView(self.levels[self.current_level].map)
+  game.map = self.levels[self.current_level].map
+  self.views.map = MapView(game.map)
 end
 
 function game:setMode(mode)
@@ -101,6 +102,9 @@ function love.update(dt)
     game.views.menu:update(dt)
     game.animations.valve.running = true
   elseif game.state == 'map' then
+    for i, actor in ipairs(game.actors) do
+      actor:update(dt)
+    end
     game.views.map:update(dt)
     game.animations.valve.running = false
   end

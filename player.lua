@@ -1,11 +1,13 @@
 
 Player = class("Player", Actor)
-Player.inputs = {
-  keyboard = {
-    up = 'up',
-    down = 'down',
-    left = 'left',
-    right = 'right',
+Player.input_alternatives = {
+  arrows = {
+    keyboard = {
+      up = 'up',
+      down = 'down',
+      left = 'left',
+      right = 'right',
+    }
   }
 }
 Player.movements = {
@@ -24,14 +26,14 @@ function Player:initialize(position, animations, game, level)
   self.direction = nil
   self.dt_since_input = 0
   self.entity_type = 'Actor'
+  self:setInputs(Player.input_alternatives['arrows'])
 end
 
-
-function Player:setSpeed(speed)
-  if speed < 1 or speed > 10 then
-    return false
+function Player:setInputs(inputs)
+  self.inputs = {}
+  for direction, key in pairs(inputs.keyboard) do
+    self.inputs[key] = Player.movements[direction]
   end
-  self.speed = speed
 end
 
 function Player:setDistanceToFinish()

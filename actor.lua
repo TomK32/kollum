@@ -27,7 +27,9 @@ function Actor:keydown(dt)
 end
 
 function Actor:update(dt)
-  self:keydown(dt)
+  if self.inputs then
+    self:keydown(dt)
+  end
   self:updatePosition(dt)
 end
 
@@ -40,26 +42,29 @@ function Actor:updatePosition(dt)
 
   self.position.x = self.position.x + self.direction.x
   self.position.y = self.position.y + self.direction.y
-  self.game_state.map:fitIntoMap(self.position)
+  local tile = self.game.map:getTile(self.position)
+  if not tile.passable then
+    self.position = old_position
+    return false
+  end
+  self.game.map:fitIntoMap(self.position)
 
-  self.game_state.map:moveEntity(self, old_position, self.position)
-
-  local tile = level.map.getTile(self.position)
+  self.game.map:moveEntity(self, old_position, self.position)
 
   if tile.exit then
     self.game.exitTo(tile.exit)
   end
- 
+
   if self.inputs then
-    self.map_view:centerAt(self.position)
+    --self.game.views.map:centerAt(self.position)
   end
 
   self.direction = nil
 end
 
 function Actor:finishReached()
-  self.game_state.paused = true
-  self.game_state.ended = true
+  self.game.paused = true
+  self.game.ended = true
   love.draw = finishScreen
 end
 
