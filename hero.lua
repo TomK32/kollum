@@ -20,14 +20,18 @@ function Hero:update(dt)
     self.dt_since_movement = self.dt_since_movement + dt
     return false
   end
-  self.path = self.level.astar:findPath(self.position, self.level.exits[1].position)
-  print(#self.path:getNodes()[1])
-  self.dt_since_movement = 0
-  local next_node = self.path:getNodes()[1]
+
+  local path = self.level.astar:findPath(self.position, self.level.exits[1].position)
+  if not path then return end
+
+  local next_node = path:getNodes()[1]
+  if not next_node then return end
 
   self.direction = {
     x = next_node.location.x - self.position.x,
     y = next_node.location.y - self.position.y }
+
+  self.dt_since_movement = 0
 
   if self:updatePosition() then
     local tile = self.level.map:getTile(self.position)
