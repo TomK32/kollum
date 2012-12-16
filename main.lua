@@ -133,6 +133,10 @@ function love.keypressed(key)
 end
 
 function love.update(dt)
+  if game.exit_reached then
+    game:exitTo(game.exit_reached)
+    game.exit_reached = nil
+  end
   love.audio.update()
   if game.level_dt > 0 then
     game.level_dt = game.level_dt - dt
