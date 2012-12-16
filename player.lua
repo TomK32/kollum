@@ -47,6 +47,7 @@ function Player:positionUpdated(dt)
     end
     game.hero.targetTreasure = nil
     love.audio.play(game.sounds.pickup_coin)
+    game:addHitMessage('Secured treassure', self.position)
     tile.entities['Treasure'] = nil
   end
 

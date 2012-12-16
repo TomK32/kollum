@@ -97,8 +97,12 @@ end
 
 function game:heroHit(position)
   self.hero.health = self.hero.health - 1
-  table.insert(self.hits, {dt = 1, message = 'HIT', position = position})
+  self:addHitMessage('HIT', position)
   love.audio.play(game.sounds.hit)
+end
+
+function game:addHitMessage(message, position)
+  table.insert(self.hits, {dt = 1, message = message, position = position})
 end
 
 function love.load()
