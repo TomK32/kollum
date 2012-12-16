@@ -39,7 +39,8 @@ game = {
   },
   actors = {},
   active_animations = {},
-  level_dt = 0
+  level_dt = 0,
+  hit_dt = 0
 }
 
 function game:start()
@@ -83,6 +84,13 @@ function game:setMode(mode)
   love.graphics.setMode(mode.width, mode.height)
 end
 
+function game:heroHit(position)
+  self.hero.health = self.hero.health - 5
+  self.hit_dt = 1
+  game.hit_position = position
+  love.audio.play(game.sounds.hit)
+end
+
 function love.load()
   game.animations = require('animations')
   game.sounds = require('sounds')
@@ -98,9 +106,14 @@ function love.draw()
   elseif game.state == 'map' then
     game.views.map:draw()
     drawStats()
+    drawHit()
+    drawLevel()
   end
   love.graphics.setFont(game.fonts.small)
   love.graphics.print(love.graphics.getCaption() .. ' Seed: ' .. game.seed, 10, love.graphics.getHeight(), 0, 1, 1, 0, 14)
+end
+
+function drawLevel()
   love.graphics.setFont(game.fonts.regular)
   if game.level_dt > 0 then
     love.graphics.push()
@@ -109,6 +122,18 @@ function love.draw()
     local d = 1-game.level_dt
     love.graphics.scale(10 * d,10 * d)
     love.graphics.print("Level " .. game.current_level, math.sin(d*3) * 20, 12)
+    love.graphics.pop()
+  end
+end
+
+function drawHit()
+  if game.hit_dt > 0 then
+    love.graphics.push()
+    love.graphics.scale(10,10)
+    love.graphics.setColor(255,50,50,200)
+    love.graphics.print('HIT!',
+        math.sin(game.hit_dt) * 30,
+        game.graphics.mode.height / 250 * math.sin(game.hit_dt)*10)
     love.graphics.pop()
   end
 end
@@ -141,10 +166,16 @@ function love.update(dt)
     game:exitTo(game.exit_reached)
     game.exit_reached = nil
   end
+
   love.audio.update()
+
   if game.level_dt > 0 then
     game.level_dt = game.level_dt - dt
   end
+  if game.hit_dt > 0 then
+    game.hit_dt = game.hit_dt - dt
+  end
+
   if game.state == 'menu' then
     game.views.menu:update(dt)
     game.animations.valve.running = true
