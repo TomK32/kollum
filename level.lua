@@ -59,18 +59,18 @@ end
 function Level:placeVillain()
   -- put villan in the bottom right
   local position = self:seedPosition(self.level, self.level + 1, 0.3, 0.3, self.map.width * 0.7, self.map.height * 0.7)
-  local villain = Player(position, game.animations.villain, game, self)
-  self.map:place(villain)
+  game.villain.position = position
+  game.villain.level = self
+  self.map:place(game.villain)
   self.map:makePath(self.map:getTile(position), position)
-  table.insert(game.actors, villain)
 end
 
 function Level:placeHero()
   local position = self:seedPosition(self.level, self.level + 1, 0.3, 0.3)
-  local hero = Hero(position, game.animations.hero, game, self)
-  self.map:place(hero)
+  game.hero.position = position
+  game.hero.level = self
+  self.map:place(game.hero)
   self.map:makePath(self.map:getTile(position), position)
-  table.insert(game.actors, hero)
 end
 
 function Level:placeTreasure()

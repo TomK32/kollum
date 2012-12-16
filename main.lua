@@ -43,6 +43,8 @@ game = {
 }
 
 function game:start()
+  game.hero = Hero({x=1, y=1}, game.animations.hero, game, self)
+  game.villain = Player({x=1, y=1}, game.animations.villain, game, self)
   self:nextLevel()
   self.views.map.display.width = game.graphics.mode.width - 10
   self.views.map.display.height = game.graphics.mode.height - 10
@@ -71,6 +73,8 @@ function game:nextLevel(level_num)
   else
     self.views.map.map = game.map
   end
+  table.insert(self.actors, self.villain)
+  table.insert(self.actors, self.hero)
   self.level_dt = 1
 end
 
