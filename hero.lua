@@ -66,6 +66,7 @@ end
 
 function Hero:directionToTreasure(treasure)
   local path = self.level.astar:findPath(self.position, treasure.position)
+  if not path then return end
   return self:nodeToDirection(path:getNodes()[1])
 end
 function Hero:directionToExit()
