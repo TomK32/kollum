@@ -9,13 +9,19 @@ gui.core.style.color.normal.bg = {80,180,80}
 
 function MenuView:draw()
   gui.core.draw()
+  local x = 250
+  local y = 50
+  if game.graphics.mode.width < 800 then
+    x = 130
+    y = 20
+  end
 
   love.graphics.push()
   love.graphics.setFont(game.fonts.large)
   love.graphics.setColor(255,255,255,200)
-  love.graphics.print('Kollum: The Pressure Valve', 250, 50)
+  love.graphics.print('Kollum: The Pressure Valve', x, y)
   love.graphics.setColor(255,200, 10, 255)
-  love.graphics.print('Kollum: The Pressure Valve', 249, 49)
+  love.graphics.print('Kollum: The Pressure Valve', x-1, y-1)
 
   local text = {
     'You are Kollum the Destroyer!',
@@ -26,27 +32,27 @@ function MenuView:draw()
     'You have but one precious little thing',
     'left in this dark world: The Pressure Valve',
     '',
-    'But you lost your precious, near the Surfance,',
+    'But you lost your precious, near the Surface,',
     'where some adventurer by the name of Tombo found it.',
     '',
     'You want your precious back',
     'and you must stop Tombo in his quest.'
   }
-  local y = 80
+  local y = y + 30
   love.graphics.setFont(game.fonts.regular)
   for i, line in ipairs(text) do
-    y = y + 17
-    love.graphics.print(line, 260, y)
+    y = y + game.fonts.lineHeight
+    love.graphics.print(line, x+10, y)
   end
 
   y = y + 40
   love.graphics.setFont(game.fonts.large)
-  love.graphics.print('How to play', 250, y)
+  love.graphics.print('How to play', x, y)
   text = {
     'Move around with the arrow keys,',
-    'Collect the small, useless things that',
-    'Tombo wants before he gets to them',
-    'Hit him if you must, but he iss strong!',
+    'Collect the small, useless things',
+    'Tombo wants before he gets to them.',
+    'Hit him if you must, but he is strong!',
     'And lastly, get to the exit to the next',
     'level before Tombo does',
     '',
@@ -56,8 +62,8 @@ function MenuView:draw()
   y = y + 20
   love.graphics.setFont(game.fonts.regular)
   for i, line in ipairs(text) do
-    y = y + 17
-    love.graphics.print(line, 260, y)
+    y = y + game.fonts.lineHeight
+    love.graphics.print(line, x+10, y)
   end
 
 
@@ -68,7 +74,14 @@ function MenuView:draw()
 end
 
 function MenuView:update(dt)
-  gui.group.push({grow = "down", pos = {100, 150}})
+  local x = 100
+  local y = 50
+  if game.graphics.mode.width < 800 then
+    x = 10
+    y = 20
+  end
+
+  gui.group.push({grow = "down", pos = {x, y}})
   -- start the game
   if gui.Button({text = 'Start'}) then
     game:start()

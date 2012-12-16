@@ -32,16 +32,22 @@ game = {
   },
   map = nil,
   seed = (os.time() % 10) + 100,
-  fonts = {
-    small = love.graphics.newFont(10),
-    regular = love.graphics.newFont(14),
-    large = love.graphics.newFont(24)
-  },
+  fonts = {},
   actors = {},
   active_animations = {},
   level_dt = 0,
   hit_dt = 0
 }
+
+function game.createFonts(offset)
+  print(offset)
+  return {
+    lineHeight = (10 + offset) * 1.7,
+    small = love.graphics.newFont(10 + offset),
+    regular = love.graphics.newFont(14 + offset),
+    large = love.graphics.newFont(24 + offset)
+  }
+end
 
 function game:start()
   game.hero = Hero({x=1, y=1}, game.animations.hero, game, self)
@@ -83,6 +89,11 @@ end
 function game:setMode(mode)
   game.graphics.mode = mode
   love.graphics.setMode(mode.width, mode.height)
+  if game.graphics.mode.height < 600 then
+    game.fonts = game.createFonts(-2)
+  else
+    game.fonts = game.createFonts(0)
+  end
 end
 
 function game:heroHit(position)
@@ -96,6 +107,7 @@ function love.load()
   game.animations = require('animations')
   table.insert(game.active_animations, game.animations.valve)
   game.sounds = require('sounds')
+  game.fonts = game.createFonts(0)
   love.audio.play(game.sounds.startmenu) -- stream and loop background music
 end
 
