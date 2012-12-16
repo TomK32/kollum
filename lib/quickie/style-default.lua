@@ -30,16 +30,16 @@ local color = {
 --	hot    = {bg = {215,215,215}, fg = {52,65,160}, border={100,100,100}},
 --	active = {bg = {230,230,230}, fg = {69,84,201}, border={100,100,100}}
 	normal = {bg = {78,78,78}, fg = {200,200,200}, border={20,20,20}},
-	hot    = {bg = {98,98,98}, fg = {69,201,84},   border={30,30,30}},
-	active = {bg = {88,88,88}, fg = {49,181,64},   border={10,10,10}}
+	hot    = {bg = {98,98,98}, fg = {229,101,84},   border={30,30,30}},
+	active = {bg = {88,88,88}, fg = {149,81,64},   border={10,10,10}}
 }
 
 -- box drawing
 local gradient = {}
 function gradient:set(from, to)
 	local id = love.image.newImageData(1,2)
-	id:setPixel(0,0, to,to,to,255)
-	id:setPixel(0,1, from,from,from,255)
+	id:setPixel(0,0, to,to/2,to,255)
+	id:setPixel(0,1, from,from/2,from,255)
 	gradient.img = love.graphics.newImage(id)
 	gradient.img:setFilter('linear', 'linear')
 end
