@@ -120,9 +120,10 @@ function drawStats()
   love.graphics.push()
   for i, actor in ipairs(game.actors) do
     if actor.class.name == 'Hero' then
-      love.graphics.translate(0, i * 20)
+      love.graphics.setFont(game.fonts.large)
+      love.graphics.translate(game.graphics.mode.width - 200, i * 20)
       love.graphics.setColor(unpack(game.hero_colors[(i % #game.hero_colors)+1]))
-      love.graphics.print(actor.score, 0, 0)
+      love.graphics.print('Hero score: ' .. actor.score, 0, 0)
     end
   end
   love.graphics.pop()
