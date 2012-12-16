@@ -34,7 +34,7 @@ function Hero:update(dt)
     if tile and tile.exit then
       self.score = self.score + 1
     end
-    if tile.get('Treasure') and #tile.get('Treasure') > 0 then
+    if tile:get('Treasure') and #tile:get('Treasure') > 0 then
       self.score = self.score + 1
     end
   end
