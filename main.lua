@@ -6,9 +6,7 @@
 --
 require 'lib/middleclass'
 require 'lib/AnAL'
-package.path = './lib/lua-astar/?.lua;' .. package.path
-print(package.path)
-require 'lib/lua-astar/astar'
+require 'lib/astar'
 require 'views/view'
 require 'views/menu'
 require 'views/map_view'
