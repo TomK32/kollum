@@ -5,18 +5,27 @@ function Level:initialize(level, seed)
   self.level = level
   self.seed = seed
   self.exits = {}
-  SimplexNoise.seedP(self.seed + self.level)
-  self.map = Map(
-    math.floor(love.graphics.getWidth() / MapView.tile_size.x)-1,
-    math.floor(love.graphics.getHeight() / MapView.tile_size.y)-1)
 
-  self.astar = AStar(self.map)
 
-  self:placeExit({self.level + 1}, self.seed)
+  self.seed = self.seed + self.level
+  local tries = 0
+  repeat
+    tries = tries + 1
+    self.seed = self.seed + tries
+    SimplexNoise.seedP(self.seed)
+    self.map = Map(
+      math.floor(love.graphics.getWidth() / MapView.tile_size.x)-1,
+      math.floor(love.graphics.getHeight() / MapView.tile_size.y)-1)
 
-  self:placeHero()
-  self:placeVillain()
-  self:placeTreasure()
+    self.astar = AStar(self.map)
+
+    self:placeExit({self.level + 1}, self.seed)
+
+    self:placeHero()
+    self:placeVillain()
+    self:placeTreasure()
+  until self:goodMap() or tries > 10
+  print(tries .. " tries for a good map")
 end
 
 function Level:placeExit(exits, seed)
@@ -72,4 +81,14 @@ function Level:placeTreasure()
     self.map:place(treasure)
     self.map:makePath(self.map:getTile(position), position)
   end
+end
+
+function Level:goodMap()
+  if game.hero.position and not self.astar:findPath(game.hero.position, self.exits[1].position) then
+    return false
+  end
+  if game.villain.position and not self.astar:findPath(game.villain.position, self.exits[1].position) then
+    return false
+  end
+  return true
 end

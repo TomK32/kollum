@@ -55,12 +55,16 @@ end
 
 function game:nextLevel(level_num)
   self.actors = {}
+  local last_seed = self.seed
+  if self.levels[self.current_level] then
+    last_seed = self.levels[self.current_level].seed
+  end
   if not level_num then
     self.current_level = game.current_level + 1
   else
     self.current_level = level_num
   end
-  table.insert(self.levels, Level(self.current_level, self.seed))
+  table.insert(self.levels, Level(self.current_level, last_seed + 1))
   game.map = self.levels[self.current_level].map
   if not self.views.map then
     self.views.map = MapView(game.map)
