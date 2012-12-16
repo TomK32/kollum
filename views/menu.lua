@@ -101,7 +101,7 @@ function MenuView:update(dt)
 
   -- screen resolutions
   modes = love.graphics.getModes()
-  table.sort(modes, function(a, b) return a.width*a.height < b.width*b.height end)   -- sort from smallest to largest
+  table.sort(modes, function(a, b) return a.width*a.height > b.width*b.height end)   -- sort from smallest to largest
   for i, mode in ipairs(modes) do
     if gui.Button({text = mode.width .. 'x' .. mode.height}) then
       game:setMode(mode)
