@@ -46,6 +46,7 @@ function Hero:update(dt)
           end
         end
       end
+      love.audio.play(game.sounds.pickup_loose)
       tile.entities['Treasure'] = nil
       self.targetTreasure = nil
       self.score = self.score + 1

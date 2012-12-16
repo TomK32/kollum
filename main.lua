@@ -77,6 +77,7 @@ function game:nextLevel(level_num)
   table.insert(self.actors, self.villain)
   table.insert(self.actors, self.hero)
   self.level_dt = 1
+  love.audio.play(game.sounds.level)
 end
 
 function game:setMode(mode)
@@ -149,10 +150,10 @@ function drawStats()
   love.graphics.push()
   for i, actor in ipairs(game.actors) do
     if actor.class.name == 'Hero' then
-      love.graphics.setFont(game.fonts.large)
-      love.graphics.translate(game.graphics.mode.width - 200, i * 20)
+      love.graphics.setFont(game.fonts.regular)
+      love.graphics.translate(game.graphics.mode.width - 300, i * 20)
       love.graphics.setColor(unpack(game.hero_colors[(i % #game.hero_colors)+1]))
-      love.graphics.print('Hero score: ' .. actor.score, 0, 0)
+      love.graphics.print('Hero score: ' .. actor.score .. ' / Health: ' .. actor.health, 0, 0)
     end
   end
   love.graphics.pop()
