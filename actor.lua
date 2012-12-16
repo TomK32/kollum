@@ -35,7 +35,7 @@ end
 
 function Actor:updatePosition(dt)
   if not self.direction then
-    return
+    return false
   end
 
   local old_position = {x = self.position.x, y = self.position.y}
@@ -60,6 +60,7 @@ function Actor:updatePosition(dt)
   end
 
   self.direction = nil
+  return true
 end
 
 function Actor:finishReached()

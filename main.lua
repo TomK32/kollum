@@ -25,6 +25,7 @@ game = {
   current_level = 0,
   levels = {},
   views = { menu = MenuView() },
+  hero_colors = {{200,0,0,255}, {0, 200, 0, 255}},
   graphics = {
     fullscreen = false,
     mode = { height = love.graphics.getHeight(), width = love.graphics.getWidth() }
@@ -88,6 +89,7 @@ function love.draw()
     game.views.menu:draw()
   elseif game.state == 'map' then
     game.views.map:draw()
+    drawStats()
   end
   love.graphics.setFont(game.fonts.small)
   love.graphics.print(love.graphics.getCaption() .. ' Seed: ' .. game.seed, 10, love.graphics.getHeight(), 0, 1, 1, 0, 14)
@@ -107,6 +109,18 @@ function drawValve()
   love.graphics.push()
   love.graphics.scale(20,20)
   game.animations.valve:draw(game.graphics.mode.width / 45, game.graphics.mode.height / 50)
+  love.graphics.pop()
+end
+
+function drawStats()
+  love.graphics.push()
+  for i, actor in ipairs(game.actors) do
+    if actor.class.name == 'Hero' then
+      love.graphics.translate(0, i * 20)
+      love.graphics.setColor(unpack(game.hero_colors[(i % #game.hero_colors)+1]))
+      love.graphics.print(actor.score, 0, 0)
+    end
+  end
   love.graphics.pop()
 end
 
