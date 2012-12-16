@@ -99,3 +99,63 @@ function Map:makePath(tile, position, dir)
     end
   end
 end
+
+-- compability for Lua-star
+function Map:getNode(position)
+  local tile = self:getTile(position)
+  if tile and tile.passable then
+    return Node(position, 1, tile)
+  end
+end
+
+function Map:locationsAreEqual(a,b)
+  return a.x == b.x and a.y == b.y
+end
+function Map:getAdjacentNodes(curnode, dest)
+  local result = {}
+  local cl = curnode.location
+  local dl = dest
+
+  local n = false
+
+  n = self:_handleNode(cl.x + 1, cl.y, curnode, dl.x, dl.y)
+  if n then
+    table.insert(result, n)
+  end
+
+  n = self:_handleNode(cl.x - 1, cl.y, curnode, dl.x, dl.y)
+  if n then
+    table.insert(result, n)
+  end
+
+  n = self:_handleNode(cl.x, cl.y + 1, curnode, dl.x, dl.y)
+  if n then
+    table.insert(result, n)
+  end
+
+  n = self:_handleNode(cl.x, cl.y - 1, curnode, dl.x, dl.y)
+  if n then
+    table.insert(result, n)
+  end
+
+  return result
+end
+
+function Map:_handleNode(x, y, fromnode, destx, desty)
+  -- Fetch a Node for the given location and set its parameters
+  local n = self:getNode({x = x, y = y})
+
+  if n ~= nil then
+    local dx = math.max(x, destx) - math.min(x, destx)
+    local dy = math.max(y, desty) - math.min(y, desty)
+    local emCost = dx + dy
+
+    n.mCost = n.mCost + fromnode.mCost
+    n.score = n.mCost + emCost
+    n.parent = fromnode
+
+    return n
+  end
+
+  return nil
+end

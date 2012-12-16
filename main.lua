@@ -4,9 +4,11 @@
 -- End Of The World (music). You also need to construct something to make a journey (9)
 -- to a parallel world (10).
 --
-
 require 'lib/middleclass'
 require 'lib/AnAL'
+package.path = './lib/lua-astar/?.lua;' .. package.path
+print(package.path)
+require 'lib/lua-astar/astar'
 require 'views/view'
 require 'views/menu'
 require 'views/map_view'

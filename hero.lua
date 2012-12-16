@@ -10,15 +10,22 @@ function Hero:initialize(position, animations, game, level)
   self.direction = false
   self.dt_since_movement = 0
   self.entity_type = 'Actor'
+  self.speed = 0.5 -- every x seconds
 end
 
 function Hero:update(dt)
-  if self.dt_since_movement < 1 then
+
+  if self.dt_since_movement < self.speed then
     self.dt_since_movement = self.dt_since_movement + dt
     return false
   end
-  self.dt_since_movement = 0
-  self.direction = {x = 1-math.floor(math.random()*3), y = 1-math.floor(math.random()*3)}
+  self.path = self.level.astar:findPath(self.position, self.level.exits[1].position)
 
-  self:updatePosition()
+  self.dt_since_movement = 0
+  local next_node = self.path:getNodes()[1]
+
+  self.direction = {
+    x = next_node.location.x - self.position.x,
+    y = next_node.location.y - self.position.y }
+
 end

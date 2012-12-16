@@ -4,10 +4,14 @@ Level = class("Level")
 function Level:initialize(level, seed)
   self.level = level
   self.seed = seed
+  self.exits = {}
   SimplexNoise.seedP(self.seed + self.level)
   self.map = Map(
     math.floor(love.graphics.getWidth() / MapView.tile_size.x)-1,
     math.floor(love.graphics.getHeight() / MapView.tile_size.y)-1)
+
+  self.astar = AStar(self.map)
+
   self:placeExit({self.level + 1}, self.seed)
 
   self:placeHero()
@@ -25,6 +29,7 @@ function Level:placeExit(exits, seed)
   end
   tile.exit = {level = exits[1]}
   self.map:makePath(tile, pos)
+  table.insert(self.exits, {position = pos, level = exits[1]})
   table.remove(exits, 1)
   self:placeExit(exits, seed + 2)
 end
