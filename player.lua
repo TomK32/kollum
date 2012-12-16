@@ -8,6 +8,14 @@ Player.input_alternatives = {
       left = 'left',
       right = 'right',
     }
+  },
+  wasd = {
+    keyboard = {
+      up = 'w',
+      down = 's',
+      left = 'a',
+      right = 'd',
+    }
   }
 }
 Player.movements = {
@@ -27,6 +35,8 @@ function Player:initialize(position, animations, game, level)
   self.direction = nil
   self.dt_since_input = 0
   self.entity_type = 'Actor'
+  self.inputs = {}
+  self:setInputs(Player.input_alternatives['wasd'])
   self:setInputs(Player.input_alternatives['arrows'])
 end
 
@@ -54,7 +64,6 @@ function Player:positionUpdated(dt)
 end
 
 function Player:setInputs(inputs)
-  self.inputs = {}
   for direction, key in pairs(inputs.keyboard) do
     self.inputs[key] = Player.movements[direction]
   end
