@@ -86,16 +86,7 @@ function MenuView:update(dt)
   if gui.Button({text = 'Start'}) then
     game:start()
   end
-
-  -- screen resolutions
   gui.group.push({grow = "down", pos = {0, 20}})
-  modes = love.graphics.getModes()
-  table.sort(modes, function(a, b) return a.width*a.height < b.width*b.height end)   -- sort from smallest to largest
-  for i, mode in ipairs(modes) do
-    if gui.Button({text = mode.width .. 'x' .. mode.height}) then
-      game:setMode(mode)
-    end
-  end
 
   -- fullscreen toggle
   if self.mode.fullscreen then
@@ -106,5 +97,14 @@ function MenuView:update(dt)
   if gui.Button({text = text}) then
     game.graphics.fullscreen = not game.graphics.fullscreen
     love.graphics.setMode(love.graphics.getWidth(), love.graphics.getHeight(), game.graphics.fullscreen)
+  end
+
+  -- screen resolutions
+  modes = love.graphics.getModes()
+  table.sort(modes, function(a, b) return a.width*a.height < b.width*b.height end)   -- sort from smallest to largest
+  for i, mode in ipairs(modes) do
+    if gui.Button({text = mode.width .. 'x' .. mode.height}) then
+      game:setMode(mode)
+    end
   end
 end
