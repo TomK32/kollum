@@ -12,16 +12,12 @@ function Hero:initialize(position, animations, game, level)
   self.entity_type = 'Actor'
   self.speed = 0.15 -- every x seconds
   self.score = 0
+  self.health = 100
   self.treasureDistance = 10
   self.targetTreasure = nil
 end
 
 function Hero:update(dt)
-
-  if self.dt_since_movement < self.speed then
-    self.dt_since_movement = self.dt_since_movement + dt
-    return false
-  end
 
   if self.targetTreasure then
     self.direction = self:directionToTreasure(self.targetTreasure)

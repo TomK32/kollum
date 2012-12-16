@@ -149,8 +149,9 @@ function love.update(dt)
     game.views.menu:update(dt)
     game.animations.valve.running = true
   elseif game.state == 'map' then
-    for i, actor in ipairs(game.actors) do
-      actor:update(dt)
+    if game.villain:update(dt) then
+      -- only move hero if vaillain moved
+      game.hero:update(dt)
     end
     game.views.map:update(dt)
     game.animations.valve.running = false

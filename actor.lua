@@ -24,13 +24,15 @@ function Actor:keydown(dt)
     end
   end
   self.dt_since_input = self.dt_since_input + dt
+  return moved
 end
 
 function Actor:update(dt)
   if self.inputs then
-    self:keydown(dt)
+    if not self:keydown(dt) then
+    end
   end
-  self:updatePosition(dt)
+  return self:updatePosition(dt)
 end
 
 function Actor:updatePosition(dt)
@@ -60,9 +62,13 @@ function Actor:updatePosition(dt)
   end
 
   self.direction = nil
+  self:positionUpdated()
   return true
 end
 
+function Actor:positionUpdated()
+
+end
 function Actor:finishReached()
   self.game.paused = true
   self.game.ended = true
