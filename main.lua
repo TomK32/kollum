@@ -23,7 +23,7 @@ game = {
   current_level = 0,
   levels = {},
   views = { menu = MenuView() },
-  hero_colors = {{200,0,0,255}, {0, 200, 0, 255}},
+  hero_colors = {{200,200,0,255}, {0, 200, 0, 255}},
   graphics = {
     fullscreen = false,
     mode = { height = love.graphics.getHeight(), width = love.graphics.getWidth() }
@@ -34,7 +34,7 @@ game = {
   actors = {},
   active_animations = {},
   level_dt = 0,
-  hit_dt = 0
+  hits = {}
 }
 
 function game.createFonts(offset)
@@ -43,7 +43,8 @@ function game.createFonts(offset)
     lineHeight = (10 + offset) * 1.7,
     small = love.graphics.newFont(10 + offset),
     regular = love.graphics.newFont(14 + offset),
-    large = love.graphics.newFont(24 + offset)
+    large = love.graphics.newFont(24 + offset),
+    very_large = love.graphics.newFont(48 + offset)
   }
 end
 
@@ -95,9 +96,8 @@ function game:setMode(mode)
 end
 
 function game:heroHit(position)
-  self.hero.health = self.hero.health - 5
-  self.hit_dt = 1
-  game.hit_position = position
+  self.hero.health = self.hero.health - 1
+  table.insert(self.hits, {dt = 1, message = 'HIT', position = position})
   love.audio.play(game.sounds.hit)
 end
 
@@ -115,7 +115,7 @@ function love.draw()
   elseif game.state == 'map' then
     game.views.map:draw()
     drawStats()
-    drawHit()
+    drawHits()
     drawLevel()
   elseif game.state == 'finished' then
     drawFinish()
@@ -152,15 +152,19 @@ function drawLevel()
   end
 end
 
-function drawHit()
-  if game.hit_dt > 0 then
-    love.graphics.push()
-    love.graphics.scale(10,10)
-    love.graphics.setColor(255,50,50,200)
-    love.graphics.print('HIT!',
-        math.sin(game.hit_dt) * 30,
-        game.graphics.mode.height / 250 * math.sin(game.hit_dt)*10)
-    love.graphics.pop()
+function drawHits()
+  for i=1, #game.hits do
+    local dt = game.hits[i].dt
+    local position = game.hits[i].position
+    if dt > 0 then
+      love.graphics.push()
+      love.graphics.setFont(game.fonts.very_large)
+      love.graphics.setColor(255,50,50,200)
+      love.graphics.print(game.hits[i].message,
+          dt * position.x * game.views.map.tile_size.x,
+          dt * position.y * game.views.map.tile_size.y)
+      love.graphics.pop()
+    end
   end
 end
 
@@ -170,9 +174,12 @@ function drawStats()
   for i, actor in ipairs(game.actors) do
     if actor.class.name == 'Hero' then
       love.graphics.setFont(game.fonts.regular)
-      love.graphics.translate(game.graphics.mode.width - 300, i * 20)
+      love.graphics.translate(game.graphics.mode.width - 200, i * 20)
+      love.graphics.setColor(100,100,100,100)
+      love.graphics.rectangle('fill', 0, 0, 135, 35)
       love.graphics.setColor(unpack(game.hero_colors[(i % #game.hero_colors)+1]))
-      love.graphics.print('Hero score: ' .. actor.score .. ' / Health: ' .. actor.health, 0, 0)
+      love.graphics.print('Hero score: ' .. actor.score .. '/20', 3, 0)
+      love.graphics.print('Health: ' .. actor.health .. '/100', 3, game.fonts.lineHeight)
     end
   end
   love.graphics.pop()
@@ -192,9 +199,14 @@ function love.update(dt)
   if game.level_dt > 0 then
     game.level_dt = game.level_dt - dt
   end
-  if game.hit_dt > 0 then
-    game.hit_dt = game.hit_dt - dt
+  local valid_hits = {}
+  for i=1, #game.hits do
+    if game.hits[i].dt > 0 then
+      game.hits[i].dt = game.hits[i].dt - dt
+      table.insert(valid_hits, game.hits[i])
+    end
   end
+  game.hits = valid_hits
 
   if game.state == 'menu' then
     game.views.menu:update(dt)

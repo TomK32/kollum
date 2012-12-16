@@ -34,7 +34,7 @@ function Player:positionUpdated(dt)
   -- hit him hard
   if math.abs(game.hero.position.x - self.position.x) < 2 and
     math.abs(game.hero.position.y - self.position.y) < 2 then
-    game:heroHit()
+    game:heroHit(self.position)
   end
   local tile = self.level.map:getTile(self.position)
   if tile:get('Treasure') and #tile:get('Treasure') > 0 then
