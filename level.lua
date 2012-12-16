@@ -5,6 +5,7 @@ function Level:initialize(level, seed)
   self.level = level
   self.seed = seed
   self.exits = {}
+  self.treasures = {}
 
 
   self.seed = self.seed + self.level
@@ -78,6 +79,7 @@ function Level:placeTreasure()
     local position = self:seedPosition(treasureSeed , treasureSeed, 0.3, 0.3, self.map.width * 0.4, self.map.height * 0.4)
     treasureSeed = treasureSeed + i
     local treasure = Treasure(position, game.animations.treasure, self)
+    table.insert(self.treasures, treasure)
     self.map:place(treasure)
     self.map:makePath(self.map:getTile(position), position)
   end
