@@ -5,8 +5,10 @@ function Level:initialize(level, seed)
   self.level = level
   self.seed = seed
   SimplexNoise.seedP(self.seed + self.level)
-  self.map = Map(40, 23)
-  self:placeExit({self.level + 1, self.level - 1}, self.seed)
+  self.map = Map(
+    math.floor(love.graphics.getWidth() / MapView.tile_size.x)-1,
+    math.floor(love.graphics.getHeight() / MapView.tile_size.y)-1)
+  self:placeExit({self.level + 1}, self.seed)
 
   self:placeHero()
   self:placeVillain()

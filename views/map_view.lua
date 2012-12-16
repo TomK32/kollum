@@ -2,7 +2,7 @@
 MapView = class("MapView", View)
 MapView:include({
   map = nil,
-  tile_size = {x = 24, y = 24},
+  tile_size = {x = 32, y = 32},
   cursor_position = { x = 14, y = 11 },
   top_left = { x = 0, y = 0 }, -- offset
   draw_cursor = false,
