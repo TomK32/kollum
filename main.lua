@@ -101,7 +101,6 @@ end
 
 function love.draw()
   if game.state == 'menu' then
-    drawValve()
     game.views.menu:draw()
   elseif game.state == 'map' then
     game.views.map:draw()
@@ -155,38 +154,6 @@ function drawHit()
   end
 end
 
-function drawValve()
-  love.graphics.push()
-  love.graphics.setFont(game.fonts.large)
-  love.graphics.setColor(255,255,255,200)
-  love.graphics.print('Kollum: The Pressure Valve', 250, 50)
-  love.graphics.setColor(255,255, 0, 255)
-  love.graphics.print('Kollum: The Pressure Valve', 249, 49)
-
-  local text = {
-    'You are Kollum the Destoryer!',
-    'Back in the olden days you brought',
-    'death upon the ancient',
-    'underground city of Ludarume.',
-    '',
-    'You have only one precious little thing',
-    'left in this world: The Pressure Valve',
-    'But you lost it close to the surfance',
-    'where some adventurer named Tombo found it!',
-    '',
-    'You want your precious back',
-    'and you must stop Tombo in his quest.'
-  }
-
-  love.graphics.setFont(game.fonts.regular)
-  for i, line in ipairs(text) do
-    love.graphics.print(line, 260, 80 + 17 * i)
-  end
-
-  love.graphics.scale(20,20)
-  game.animations.valve:draw(game.graphics.mode.width / 45, game.graphics.mode.height / 50)
-  love.graphics.pop()
-end
 
 function drawStats()
   love.graphics.push()
