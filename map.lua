@@ -62,3 +62,40 @@ Map:include({
     end
   end
 })
+
+-- clear unpassable fields from pos to the next passable field
+function Map:makePath(tile, position, dir)
+  directions = {{1,0}, {0,1}, {-1, 0}, {0, -1}}
+  for i = 1, #directions do
+    if last_dir then
+      local dir = last_dir
+      last_dir = nil
+    else
+      dir = directions[math.floor(math.random() * #directions)+1]
+    end
+    local new_pos = {x = position.x - dir[1], y = position.y - dir[2]}
+    local other_tile = self:getTile(new_pos)
+    if other_tile then
+      if other_tile.passable then
+        tile.color = {120,120,120, 255}
+        tile.passable = true
+        return true
+      elseif self:makePath(other_tile, new_pos) then
+        tile.color = {120,120,120, 255}
+        tile.passable = true
+        return true
+      end
+    end
+  end
+  for i, x in next, {-1, 0, 1} do
+    for i, y in next, {-1, 0, 1} do
+      local other_tile = self:getTile({x = position.x - x, y = position.y - y})
+      if other_tile then
+        if other_tile.passable then
+          tile.passable = true
+          return true
+        end
+      end
+    end
+  end
+end

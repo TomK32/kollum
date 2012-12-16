@@ -35,6 +35,7 @@ game = {
     large = love.graphics.newFont(24)
   },
   actors = {},
+  active_animations = {},
   level_dt = 0
 }
 
@@ -125,10 +126,8 @@ function love.update(dt)
     game.views.map:update(dt)
     game.animations.valve.running = false
   end
-  for i, animation in pairs(game.animations) do
-    if animation.running then
-      animation:update(dt)
-    end
+  for i, animation in ipairs(game.active_animations) do
+    animation:update(dt)
   end
 end
 

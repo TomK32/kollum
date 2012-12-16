@@ -21,6 +21,7 @@ function Player:initialize(position, animations, game, level)
   self.position = position
   self.animations = animations
   self.animation = animations.standing
+  table.insert(game.active_animations, self.animation)
   self.game = game
   self.level = level
   self.direction = nil

@@ -51,6 +51,9 @@ MapView:include({
             self:drawTile({200,200,0,155}, c_x, c_y, 'line')
             tile:actors()[1].animation:draw(c_x, c_y)
           end
+          if tile:get('Treasure') then
+            tile:get('Treasure')[1].animation:draw(c_x, c_y)
+          end
         end
       end
     end

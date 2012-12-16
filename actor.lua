@@ -43,7 +43,7 @@ function Actor:updatePosition(dt)
   self.position.x = self.position.x + self.direction.x
   self.position.y = self.position.y + self.direction.y
   local tile = self.game.map:getTile(self.position)
-  if not tile.passable then
+  if not tile or not tile.passable then
     self.position = old_position
     return false
   end

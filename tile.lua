@@ -38,6 +38,7 @@ end
 
 function Tile:removeEntity(entity)
   local class_name = entity.entity_type or entity.class.name
+  if not self.entities[class_name] then return false end
   for i, e in pairs(self.entities[class_name]) do
     if e == entity then
       table.remove(self.entities[class_name], i)
@@ -47,6 +48,10 @@ function Tile:removeEntity(entity)
   return false
 end
 
+function Tile:get(klass)
+  return self.entities[klass]
+end
+
 function Tile:actors()
-  return self.entities['Actor']
+  return self:get('Actor')
 end
