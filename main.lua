@@ -134,6 +134,7 @@ function love.draw()
 end
 
 function drawFinish()
+  local text = {'The game has ended'}
   if game.hero.health < 0 then
     text = {'Congratulations, you killed that rotten "hero" Tombo.', 'You got your prescious pressure valve back'}
   end
