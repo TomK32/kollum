@@ -6,7 +6,7 @@ function Level:initialize(level, seed)
   self.seed = seed
   self.exits = {}
   self.treasures = {}
-
+  self.dt = 0
 
   self.seed = self.seed + self.level
   local tries = 0
@@ -27,6 +27,10 @@ function Level:initialize(level, seed)
     self:placeTreasure()
   until self:goodMap() or tries > 10
   print(tries .. " tries for a good map")
+end
+
+function Level:update(dt)
+  self.dt = self.dt + dt
 end
 
 function Level:placeExit(exits, seed)

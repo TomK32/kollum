@@ -105,6 +105,10 @@ function game:addHitMessage(message, position)
   table.insert(self.hits, {dt = 1, message = message, position = position})
 end
 
+function game:currentLevel()
+  return game.levels[game.current_level]
+end
+
 function love.load()
   game.animations = require('animations')
   table.insert(game.active_animations, game.animations.valve)
@@ -216,6 +220,7 @@ function love.update(dt)
     game.views.menu:update(dt)
     game.animations.valve.running = true
   elseif game.state == 'map' then
+    game:currentLevel():update(dt)
     if game.hero.health < 0 or game.hero.score > 20 then
       game.state = 'finished'
       return

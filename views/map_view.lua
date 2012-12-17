@@ -39,6 +39,10 @@ MapView:include({
   drawEntities = function(self)
     tiles_x = math.floor(self.display.width / self.tile_size.x)
     tiles_y = math.floor(self.display.height / self.tile_size.y)
+    local scale = 1
+    if game:currentLevel().dt < 1 then
+      scale = (1 / game:currentLevel().dt)
+    end
     for x = 1, tiles_x do
       for y = 1, tiles_y do
         local color = nil
@@ -49,7 +53,7 @@ MapView:include({
           if tile:actors() and #tile:actors() > 0 then
             self:drawTile({200,200,200,55}, c_x, c_y)
             self:drawTile({200,200,0,155}, c_x, c_y, 'line')
-            tile:actors()[1].animation:draw(c_x, c_y)
+            tile:actors()[1].animation:draw(c_x, c_y, 0, scale, scale)
           end
           if tile:get('Treasure') then
             tile:get('Treasure')[1].animation:draw(c_x, c_y)
