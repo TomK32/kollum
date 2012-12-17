@@ -1,7 +1,7 @@
 
 local sounds = {}
 
-sounds.startmenu = love.audio.newSource("sounds/startmenu.wav", "static")
+sounds.startmenu = love.audio.newSource("sounds/tekno2.wav", "static")
 sounds.startmenu:setLooping(true)
 
 sounds.hit = love.audio.newSource("sounds/hit.wav", "static")
