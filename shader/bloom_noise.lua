@@ -1,8 +1,9 @@
 return love.graphics.newPixelEffect[[
+// use floats! integers suck
 extern vec2 image_size = vec2(800, 600);
-extern float factor = 1;
-extern float addPercent = 0.2; // 0..1 higher is darker
-extern float clamp = 0.85; // 0..1 lower is smoother
+extern float factor = 1.0;
+extern float addPercent = 0.2; // 0..1.0 higher is darker
+extern float clamp = 0.85; // 0..1.0 lower is smoother
 
 float rand(vec2 n)
 {
@@ -14,21 +15,21 @@ vec4 effect(vec4 color, Image tex, vec2 tc, vec2 pc)
     color = Texel(tex, tc/3); // maybe add a weight here?
 
     color += Texel(tex, tc + vec2(-offset.x, offset.y));
-    color += Texel(tex, tc + vec2(0, offset.y));
+    color += Texel(tex, tc + vec2(0.0, offset.y));
     color += Texel(tex, tc + vec2(offset.x, offset.y));
 
-    color += Texel(tex, tc + vec2(-offset.x, 0));
-    color += Texel(tex, tc + vec2(0, 0));
-    color += Texel(tex, tc + vec2(offset.x, 0));
+    color += Texel(tex, tc + vec2(-offset.x, 0.0));
+    color += Texel(tex, tc + vec2(0.0, 0.0));
+    color += Texel(tex, tc + vec2(offset.x, 0.0));
 
     color += Texel(tex, tc + vec2(-offset.x, -offset.y));
-    color += Texel(tex, tc + vec2(0, -offset.y));
+    color += Texel(tex, tc + vec2(0.0, -offset.y));
     color += Texel(tex, tc + vec2(offset.x, -offset.y));
 
-    float grey = 1 * rand(tc * factor);
+    float grey = 1.0 * rand(tc * factor);
     float clampedGrey = max(grey, clamp);
     vec4 clampedNoise = vec4(clampedGrey, clampedGrey, clampedGrey, 1);
-    return (color / 9) * clampedNoise * (1 - addPercent);
+    return (color / 9.0) * clampedNoise * (1.0 - addPercent);
 }
 ]]
 
