@@ -55,3 +55,10 @@ end
 function Tile:actors()
   return self:get('Actor')
 end
+
+
+function Tile:draw()
+  for i, entity in ipairs(self.entities) do
+    entity:draw()
+  end
+end

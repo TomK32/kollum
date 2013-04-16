@@ -6,6 +6,7 @@ function Level:initialize(level, seed)
   self.seed = seed
   self.exits = {}
   self.treasures = {}
+  self.players = {}
   self.dt = 0
 
   self.seed = self.seed + self.level
@@ -21,9 +22,9 @@ function Level:initialize(level, seed)
     self.astar = AStar(self.map)
 
     self:placeExit({self.level + 1}, self.seed)
+    self:placePlayer(game.animations.players[1])
+    self:placePlayer(game.animations.players[1])
 
-    self:placeHero()
-    self:placeVillain()
     self:placeTreasure()
   until self:goodMap() or tries > 10
   print(tries .. " tries for a good map")
@@ -60,21 +61,12 @@ function Level:seedPosition(seed_x,seed_y, scale_x, scale_y, offset_x, offset_y)
   }
 end
 
-function Level:placeVillain()
-  -- put villan in the bottom right
-  local position = self:seedPosition(self.level, self.level + 1, 0.3, 0.3, self.map.width * 0.7, self.map.height * 0.7)
-  game.villain.position = position
-  game.villain.level = self
-  self.map:place(game.villain)
-  self.map:makePath(self.map:getTile(position), position)
-end
-
-function Level:placeHero()
+function Level:placePlayer(animations)
   local position = self:seedPosition(self.level, self.level + 1, 0.3, 0.3)
-  game.hero.position = position
-  game.hero.level = self
-  self.map:place(game.hero)
+  player = Player(position, animations, self)
+  self.map:place(player)
   self.map:makePath(self.map:getTile(position), position)
+  table.insert(self.players, player)
 end
 
 function Level:placeTreasure()
@@ -90,11 +82,10 @@ function Level:placeTreasure()
 end
 
 function Level:goodMap()
-  if game.hero.position and not self.astar:findPath(game.hero.position, self.exits[1].position) then
-    return false
-  end
-  if game.villain.position and not self.astar:findPath(game.villain.position, self.exits[1].position) then
-    return false
+  for i, player in ipairs(self.players) do
+    if player.position and not self.astar:findPath(player.position, self.exits[1].position) then
+      return false
+    end
   end
   return true
 end

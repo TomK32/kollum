@@ -63,6 +63,13 @@ Map:include({
   end
 })
 
+function Map:update()
+end
+
+function Map:draw()
+
+end
+
 -- clear unpassable fields from pos to the next passable field
 function Map:makePath(tile, position, dir)
   directions = {{1,0}, {0,1}, {-1, 0}, {0, -1}}

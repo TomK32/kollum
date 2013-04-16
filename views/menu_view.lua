@@ -91,13 +91,4 @@ function MenuView:update(dt)
     game.graphics.fullscreen = not game.graphics.fullscreen
     love.graphics.setMode(love.graphics.getWidth(), love.graphics.getHeight(), game.graphics.fullscreen)
   end
-
-  -- screen resolutions
-  modes = love.graphics.getModes()
-  table.sort(modes, function(a, b) return a.width*a.height > b.width*b.height end)   -- sort from smallest to largest
-  for i, mode in ipairs(modes) do
-    if gui.Button({text = mode.width .. 'x' .. mode.height}) then
-      game:setMode(mode)
-    end
-  end
 end

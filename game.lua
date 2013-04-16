@@ -14,7 +14,8 @@ game = {
   version = require('version'),
   url = 'http://ananasblau.com/kollum',
   current_level = 1,
-  current_state = nil
+  current_state = nil,
+  seed = 1
 }
 
 function game:createFonts(offset)

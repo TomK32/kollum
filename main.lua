@@ -13,11 +13,11 @@ require 'views/map_view'
 require 'game_states/state'
 require 'game_states/intro'
 require 'game_states/main_menu'
+require 'game_states/map_state'
 require 'level'
 require 'map'
 require 'sound_manager'
 
-require 'actor'
 fx = {}
 fx.bloom_noise = require 'shader/bloom_noise'
 
@@ -39,9 +39,6 @@ end
 function love.update(dt)
   game.current_state:update(dt)
   love.audio.update()
-  for i, animation in ipairs(game.active_animations) do
-    animation:update(dt)
-  end
 end
 
 function setGraphicMode()

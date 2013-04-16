@@ -1,7 +1,4 @@
-Actor = class("Actor")
-
-require 'player'
-require 'hero'
+Actor = class("Actor", Entity)
 
 function Actor:move(direction)
   self.direction = direction

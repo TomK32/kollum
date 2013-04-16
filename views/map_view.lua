@@ -7,15 +7,9 @@ MapView:include({
   top_left = { x = 0, y = 0 }, -- offset
   draw_cursor = false,
   canvas = nil,
-  arrows = {
-    up = { p = function(self) return {-self.tile_size.x, 10, self.tile_size.x, 10, 0, 0} end, t = {1, 0}},
-    down = { p = function(self) return {-self.tile_size.x, -20, self.tile_size.x, -20, 0, -10} end, t = {1, 2}},
-    right = { p = function(self) return {-20, -self.tile_size.y, -20, self.tile_size.y, -10, 0} end, t = {2, 1}},
-    left = { p = function(self) return {10, -self.tile_size.y, 10, self.tile_size.y, 0, 0} end, t = {0, 1}},
-  },
   initialize = function(self, map)
     self.map = map
-    self.display = {x = 10, y = 10, width = 320, height = 320}
+    self.display = {x = 10, y = 10, width = game.graphics.mode.width - 20, height = game.graphics.mode.height - 20}
     self.draw_cursor = false
     self.canvas = love.graphics.newCanvas()
     self:update()
@@ -39,10 +33,6 @@ MapView:include({
   drawEntities = function(self)
     tiles_x = math.floor(self.display.width / self.tile_size.x)
     tiles_y = math.floor(self.display.height / self.tile_size.y)
-    local scale = 1
-    if game:currentLevel().dt < 1 then
-      scale = (1 / game:currentLevel().dt)
-    end
     for x = 1, tiles_x do
       for y = 1, tiles_y do
         local color = nil
@@ -50,14 +40,7 @@ MapView:include({
         c_y = (y-1) * self.tile_size.y
         local tile = self.map:getTile({x = self.top_left.x + x, y = self.top_left.y + y})
         if tile then
-          if tile:actors() and #tile:actors() > 0 then
-            self:drawTile({200,200,200,55}, c_x, c_y)
-            self:drawTile({200,200,0,155}, c_x, c_y, 'line')
-            tile:actors()[1].animation:draw(c_x, c_y, 0, scale, scale)
-          end
-          if tile:get('Treasure') then
-            tile:get('Treasure')[1].animation:draw(c_x, c_y)
-          end
+          tile:draw()
         end
       end
     end
@@ -83,10 +66,6 @@ MapView:include({
         end
       end
     end
-    if self.top_left.x > 1 then self:drawArrow('up') end
-    if self.top_left.y > 1 then self:drawArrow('left') end
-    if (self.top_left.x + self.display.width)/self.tile_size.x < self.map.width then self:drawArrow('right') end
-    if (self.top_left.y + self.display.height)/self.tile_size.y < self.map.height then self:drawArrow('down') end
     love.graphics.setCanvas()
     return self.canvas
   end,
@@ -98,16 +77,6 @@ MapView:include({
     local style = style or 'fill'
     love.graphics.rectangle(style, c_x, c_y, self.tile_size.x, self.tile_size.y)
     love.graphics.setColor(255,255,255,255)
-  end,
-
-  drawArrow = function(self, direction)
-    love.graphics.push()
-    local arrow = self.arrows[direction]
-    local x = self.display.width / 2 * arrow.t[1]
-    local y = self.display.height / 2 * arrow.t[2]
-    love.graphics.translate(x, y)
-    love.graphics.polygon('fill', unpack(arrow.p(self)))
-    love.graphics.pop()
   end,
 
   tiles_x = function(self)
