@@ -1,1 +1,1 @@
-game = {}; game.version = '0.0.1-8'
+return '0.3.0'

@@ -16,7 +16,6 @@ function MenuView:draw()
     y = 20
   end
 
-  love.graphics.push()
   love.graphics.setFont(game.fonts.large)
   love.graphics.setColor(255,255,255,200)
   love.graphics.print('Kollum: The Pressure Valve', x, y)
@@ -65,12 +64,6 @@ function MenuView:draw()
     y = y + game.fonts.lineHeight
     love.graphics.print(line, x+10, y)
   end
-
-
-  love.graphics.scale(20,20)
-  game.animations.valve:draw(game.graphics.mode.width / 45, game.graphics.mode.height / 50)
-  love.graphics.pop()
-
 end
 
 function MenuView:update(dt)
