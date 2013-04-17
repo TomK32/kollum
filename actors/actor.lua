@@ -41,21 +41,21 @@ function Actor:updatePosition(dt)
 
   self.position.x = self.position.x + self.direction.x
   self.position.y = self.position.y + self.direction.y
-  local tile = self.game.map:getTile(self.position)
+  local tile = self.level.map:getTile(self.position)
   if not tile or not tile.passable then
     self.position = old_position
     return false
   end
-  self.game.map:fitIntoMap(self.position)
+  self.level.map:fitIntoMap(self.position)
 
-  self.game.map:moveEntity(self, old_position, self.position)
+  self.level.map:moveEntity(self, old_position, self.position)
 
   if tile.exit then
-    self.game.exit_reached = tile.exit
+    self.level.exit_reached = tile.exit
   end
 
   if self.inputs then
-    --self.game.views.map:centerAt(self.position)
+    --self.level.views.map:centerAt(self.position)
   end
 
   self.direction = nil
@@ -67,8 +67,8 @@ function Actor:positionUpdated()
 
 end
 function Actor:finishReached()
-  self.game.paused = true
-  self.game.ended = true
+  self.level.paused = true
+  self.level.ended = true
   love.draw = finishScreen
 end
 

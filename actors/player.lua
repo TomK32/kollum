@@ -25,7 +25,7 @@ Player.movements = {
   right = { x =   1, y = 0 },
 }
 
-function Player:initialize(position, animations, game, level)
+function Player:initialize(position, animations, level)
   self.position = position
   self.animations = animations
   self.animation = animations.standing
@@ -41,26 +41,8 @@ function Player:initialize(position, animations, game, level)
 end
 
 function Player:positionUpdated(dt)
-  -- hit him hard
-  if math.abs(game.hero.position.x - self.position.x) < 2 and
-    math.abs(game.hero.position.y - self.position.y) < 2 then
-    game:heroHit(self.position)
-  end
+  print(self.level)
   local tile = self.level.map:getTile(self.position)
-  if tile:get('Treasure') and #tile:get('Treasure') > 0 then
-    for i, treasure in ipairs(tile:get('Treasure')) do
-      for i2, treasure2 in ipairs(self.level.treasures) do
-        if treasure == treasure2 then
-          table.remove(self.level.treasures, i2)
-        end
-      end
-    end
-    game.hero.targetTreasure = nil
-    love.audio.play(game.sounds.pickup_coin)
-    game:addHitMessage('Secured treassure', self.position)
-    tile.entities['Treasure'] = nil
-  end
-
 end
 
 function Player:setInputs(inputs)
